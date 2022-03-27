@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ProjectFilterDTO;
 import com.example.demo.entity.Project;
-import com.example.demo.entity.Task;
 import com.example.demo.service.ProjectService;
-import com.example.demo.service.TaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,34 +19,39 @@ public class ProjectController {
     @Autowired
     public ProjectService projectService;
 
-    @ApiOperation(value = "get all projects",notes = "get all projects")
+    @ApiOperation(value = "get all projects", notes = "get all projects")
     @GetMapping("/List")
-    public List<Project> getAll(){
+    public List<Project> getAll() {
         return projectService.getAll();
     }
 
-    @ApiOperation(value = "get Project",notes = "get Project")
+    @ApiOperation(value = "get Project", notes = "get Project")
     @GetMapping("/{id}")
-    public Project getById(@PathVariable("id") Long id){
+    public Project getById(@PathVariable("id") Long id) {
         return projectService.getById(id);
     }
 
-    @ApiOperation(value = "create Project",notes = "create Project")
+    @ApiOperation(value = "create Project", notes = "create Project")
     @PostMapping("/create")
-    public void create(@RequestBody Project project){
+    public void create(@RequestBody Project project) {
         projectService.createTask(project);
     }
 
-    @ApiOperation(value = "delete Project",notes = "delete Project")
+    @ApiOperation(value = "delete Project", notes = "delete Project")
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable("id") Long id){
+    public void deleteById(@PathVariable("id") Long id) {
         projectService.deleteById(id);
     }
 
-    @ApiOperation(value = "update Project",notes = "update Project")
+    @ApiOperation(value = "update Project", notes = "update Project")
     @PutMapping("/{id}")
-    public void updateById(@RequestBody Project project,@PathVariable Long id){
-        projectService.updateById(project,id);
+    public void updateById(@RequestBody Project project, @PathVariable Long id) {
+        projectService.updateById(project, id);
     }
 
+    @PostMapping("/filter")
+    public List<Project> filter(@RequestBody ProjectFilterDTO dto){
+        return projectService.filter(dto);
+
+    }
 }

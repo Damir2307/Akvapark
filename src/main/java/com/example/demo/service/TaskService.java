@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Project;
 import com.example.demo.entity.Task;
 import com.example.demo.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,24 +11,25 @@ import java.util.List;
 public class TaskService {
 
     @Autowired
-    public TaskRepository taskRepository;
+    private TaskRepository taskRepository;
 
     @Autowired
     private ProjectService projectService;
 
-    public Task getById(Long id){
+    public Task getById(Long id) {
         return taskRepository.findById(id).orElse(null);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         taskRepository.deleteById(id);
     }
 
-    public void createTask(Task task){
+    public void createTask(Task task) {
         taskRepository.save(task);
     }
-    public void updateById(Task task,Long id){
-        Task old=taskRepository.getById(id);
+
+    public void updateById(Task task, Long id) {
+        Task old = taskRepository.getById(id);
         old.setDescription(task.getDescription());
         old.setName(task.getName());
         old.setStatus(task.getStatus());

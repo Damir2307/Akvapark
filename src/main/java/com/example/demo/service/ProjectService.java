@@ -1,40 +1,74 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ProjectFilterDTO;
 import com.example.demo.entity.Project;
-import com.example.demo.entity.Task;
+import com.example.demo.entity.QProject;
 import com.example.demo.repository.ProjectRepository;
-import com.example.demo.repository.TaskRepository;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
 public class ProjectService {
 
     @Autowired
-    public ProjectRepository projectRepository;
+    private EntityManager entityManager;
 
-    public Project getById(Long id){
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    public Project getById(Long id) {
         return projectRepository.findById(id).orElse(null);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         projectRepository.deleteById(id);
     }
 
-    public void createTask(Project project){
+    public void createTask(Project project) {
         projectRepository.save(project);
     }
-    public void updateById(Project project,Long id){
-        Project old=projectRepository.getById(id);
+
+    public void updateById(Project project, Long id) {
+        Project old = projectRepository.getById(id);
         old.setName(project.getName());
         old.setStatus(project.getStatus());
         old.setPriority(project.getPriority());
         old.setStartDate(project.getStartDate());
         old.setComplDate(project.getComplDate());
         projectRepository.save(old);
+    }
+
+    public List<Project> filter(ProjectFilterDTO dto) {
+        QProject qProject = QProject.project;
+//        BooleanBuilder whereBuilder = new BooleanBuilder();
+//        JPAQuery<Project> jpaQuery=new JPAQuery<>(entityManager);
+//        if (dto.getName()!=null){
+//            whereBuilder.and(qProject.name.startsWithIgnoreCase(dto.getName())).or(qProject.name.endsWithIgnoreCase(dto.getName()));
+//        }
+//        jpaQuery.select(
+//                Projections.fields(
+//                        Project.class,
+//                        qProject.id,
+//                        qProject.name,
+//                        qProject.complDate,
+//                        qProject.priority,
+//                        qProject.status,
+//                        qProject.startDate
+//                )
+//        ).from(qProject)
+//                .where(whereBuilder);
+//                .orderBy(new OrderSpecifier<>(Order.DESC,dto.getSort()));
+        return null;
+
     }
 
     public List<Project> getAll() {
