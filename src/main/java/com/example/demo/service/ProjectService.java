@@ -46,28 +46,37 @@ public class ProjectService {
         old.setComplDate(project.getComplDate());
         projectRepository.save(old);
     }
-
+    //filter
     public List<Project> filter(ProjectFilterDTO dto) {
         QProject qProject = QProject.project;
-//        BooleanBuilder whereBuilder = new BooleanBuilder();
-//        JPAQuery<Project> jpaQuery=new JPAQuery<>(entityManager);
-//        if (dto.getName()!=null){
-//            whereBuilder.and(qProject.name.startsWithIgnoreCase(dto.getName())).or(qProject.name.endsWithIgnoreCase(dto.getName()));
-//        }
-//        jpaQuery.select(
-//                Projections.fields(
-//                        Project.class,
-//                        qProject.id,
-//                        qProject.name,
-//                        qProject.complDate,
-//                        qProject.priority,
-//                        qProject.status,
-//                        qProject.startDate
-//                )
-//        ).from(qProject)
-//                .where(whereBuilder);
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+        JPAQuery<Project> jpaQuery=new JPAQuery<>(entityManager);
+        //filter by name
+        if (dto.getName()!=null){
+            whereBuilder.and(qProject.name.startsWithIgnoreCase(dto.getName())).or(qProject.name.endsWithIgnoreCase(dto.getName()));
+        }
+        //filter by priority
+        if(dto.getPriority()!=0) {
+            whereBuilder.and(qProject.priority.eq(dto.getPriority()));
+        }
+        //filter by status
+        if (dto.getStatus()!=null){
+            whereBuilder.and(qProject.status.eq(dto.getStatus()));
+        }
+        jpaQuery.select(
+                Projections.fields(
+                        Project.class,
+                        qProject.id,
+                        qProject.name,
+                        qProject.complDate,
+                        qProject.priority,
+                        qProject.status,
+                        qProject.startDate
+                )
+        ).from(qProject)
+                .where(whereBuilder);
 //                .orderBy(new OrderSpecifier<>(Order.DESC,dto.getSort()));
-        return null;
+        return jpaQuery.fetch();
 
     }
 
