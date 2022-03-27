@@ -25,13 +25,11 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public void createTask(Task task,Long id){
-        Project project = projectService.getById(id);
-        task.setProject(project);
+    public void createTask(Task task){
         taskRepository.save(task);
     }
-    public void updateById(Task task){
-        Task old=taskRepository.getById(task.getId());
+    public void updateById(Task task,Long id){
+        Task old=taskRepository.getById(id);
         old.setDescription(task.getDescription());
         old.setName(task.getName());
         old.setStatus(task.getStatus());

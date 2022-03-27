@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepositoryImplementation<Task,Long> {
-    @Query("select * from task where project_id=?1")
+    @Query("select t from Task t where t.project.id=?1")
     List<Task> getTasks(Long id);
 
 

@@ -27,13 +27,13 @@ public class ProjectService {
     public void createTask(Project project){
         projectRepository.save(project);
     }
-    public void updateById(Project project){
-        Project old=projectRepository.getById(project.getId());
+    public void updateById(Project project,Long id){
+        Project old=projectRepository.getById(id);
         old.setName(project.getName());
         old.setStatus(project.getStatus());
         old.setPriority(project.getPriority());
-        old.setStart_date(project.getStart_date());
-        old.setCompl_date(project.getCompl_date());
+        old.setStartDate(project.getStartDate());
+        old.setComplDate(project.getComplDate());
         projectRepository.save(old);
     }
 
